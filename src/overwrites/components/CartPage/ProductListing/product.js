@@ -112,7 +112,9 @@ const Product = props => {
                             onChange={handleUpdateItemQuantity}
                         />
                     </div>
-                    <CartItemGift item={item} />
+                    {   item &&
+                        <CartItemGift item={item}/>
+                    }
                 </div>
                 <Kebab classes={{ root: classes.kebab }} disabled={true}>
                     <Section

@@ -5,7 +5,6 @@ import AddGiftProducts from '../../../../components/addGiftProducts/index'
 
 const CartItemGift = props => {
     const { item } = props;
-
     //price is zero, temp not checking
     let skipChecking = false
     try {
