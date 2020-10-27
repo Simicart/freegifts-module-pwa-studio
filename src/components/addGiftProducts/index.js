@@ -8,6 +8,7 @@ import LoadingIndicator from '@magento/venia-ui/lib/components/LoadingIndicator'
 import { useToasts } from '@magento/peregrine';
 import { AlertCircle as AlertCircleIcon } from 'react-feather';
 import Icon from '@magento/venia-ui/lib/components/Icon';
+import OptionContent from './optionContent';
 
 const errorIcon = <Icon src={AlertCircleIcon} attrs={{ width: 18 }} />;
 
@@ -22,7 +23,11 @@ const AddGiftProducts = props => {
         derivedErrorMessage,
         addGiftProductLoading,
         removeGiftProduct,
-        removeGiftProductLoading
+        removeGiftProductLoading,
+        showProductOptions,
+        setShowProductOptions,
+        itemToShowOption,
+        setItemToShowOption
     } = useAddGiftProducts({
         rule: props.rule
     })
@@ -31,7 +36,12 @@ const AddGiftProducts = props => {
             removeGiftProduct(giftItem)
         } else {
             //to add
-            addGiftProduct(giftItem);
+            if (giftItem.configurable) {
+                setItemToShowOption(giftItem)
+                setShowProductOptions(true);
+            } else {
+                addGiftProduct(giftItem);
+            }
         }
         console.log(giftItem)
     }
@@ -94,6 +104,17 @@ const AddGiftProducts = props => {
                         </React.Fragment>
                 }
             </Dialog>
+            {
+                itemToShowOption ?
+                <Dialog
+                    isOpen={showProductOptions}
+                    title={'Select Gift Options'}
+                    classes={classes}
+                    onCancel={() => setShowProductOptions(false)}
+                >
+                    <OptionContent giftItem={itemToShowOption} closeDialog={() => setShowProductOptions(false)} addGiftProduct={data => addGiftProduct(data)} />
+                </Dialog> : ''
+            }
         </div>
     )
 }

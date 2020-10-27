@@ -20,7 +20,17 @@ const CartItemGift = props => {
 
     if (!giftRuleData || !giftRuleData.mpFreeGiftsByQuoteItem || !giftRuleData.mpFreeGiftsByQuoteItem.length)
         return ''
-    const ruleToDisplay = giftRuleData.mpFreeGiftsByQuoteItem[0]
+    let ruleToDisplay
+    giftRuleData.mpFreeGiftsByQuoteItem.every(
+        ruleItem => {
+            if (!ruleItem.auto_add) {
+                ruleToDisplay = ruleItem
+                return true
+            }
+        }
+    )
+    if (!ruleToDisplay)
+        return ''
     return (
         <div className={classes.cartItemGiftCtn}>
             <AddGiftProducts rule={ruleToDisplay} classes={classes} />

@@ -7,6 +7,8 @@ import { GET_CART_DETAILS } from '@magento/venia-ui/lib/components/CartPage/cart
 export const useAddGiftProducts = props => {
     const { rule } = props
     const [openDialog, setOpenDialog] = useState(false);
+    const [showProductOptions, setShowProductOptions] = useState(false);
+    const [itemToShowOption, setItemToShowOption] = useState(false);
     let freeGiftLeft = rule.max_gift - rule.total_added;
     freeGiftLeft = freeGiftLeft > 0 ? freeGiftLeft : 0;
     const [{ cartId }] = useCartContext();
@@ -40,13 +42,13 @@ export const useAddGiftProducts = props => {
         fetchPolicy: 'cache-and-network'
     });
 
-    const addGiftProduct = useCallback((itemData) => {
+    const addGiftProduct = useCallback((itemData, configurableOptions = []) => {
         addGiftProductMutation({
             variables: {
                 cartId,
                 ruleId: rule.rule_id,
                 giftId: itemData.id,
-                configurableOptions: []
+                configurableOptions
             }
         })
     }, [addGiftProductMutation])
@@ -64,7 +66,7 @@ export const useAddGiftProducts = props => {
     useEffect(() => {
         //fetch cart after updated
         if ((removeGiftProductData || addGiftProductData) && !addGiftProductLoading && !removeGiftProductLoading) {
-            fetchCart()
+            fetchCart();
         }
     }, [removeGiftProductData, addGiftProductData, addGiftProductLoading, removeGiftProductLoading])
 
@@ -77,6 +79,10 @@ export const useAddGiftProducts = props => {
         derivedErrorMessage,
         addGiftProductLoading,
         removeGiftProduct,
-        removeGiftProductLoading
+        removeGiftProductLoading,
+        showProductOptions,
+        setShowProductOptions,
+        itemToShowOption,
+        setItemToShowOption
     };
 }
