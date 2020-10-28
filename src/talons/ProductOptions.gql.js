@@ -3,12 +3,88 @@ import gql from 'graphql-tag';
 export const GET_PRODUCT_OPTION = gql`
 query productDetail($sku: String) {
     productDetail: products(filter: {sku: {eq: $sku}}) {
-      items {
-        id
-        sku
-        url_key
-        stock_status
+        items {
+            __typename
+            categories {
+                id
+                breadcrumbs {
+                    category_id
+                }
+            }
+            description {
+                html
+            }
+            id
+            media_gallery_entries {
+                id
+                label
+                position
+                disabled
+                file
+            }
+            meta_description
+            name
+            price {
+                regularPrice {
+                    amount {
+                        currency
+                        value
+                    }
+                }
+            }
+            sku
+            small_image {
+                url
+            }
+            url_key
+            ... on ConfigurableProduct {
+                configurable_options {
+                    attribute_code
+                    attribute_id
+                    id
+                    label
+                    values {
+                        default_label
+                        label
+                        store_label
+                        use_default_value
+                        value_index
+                        swatch_data {
+                            ... on ImageSwatchData {
+                                thumbnail
+                            }
+                            value
+                        }
+                    }
+                }
+                variants {
+                    attributes {
+                        code
+                        value_index
+                    }
+                    product {
+                        id
+                        media_gallery_entries {
+                            id
+                            disabled
+                            file
+                            label
+                            position
+                        }
+                        sku
+                        stock_status
+                        price {
+                            regularPrice {
+                                amount {
+                                    currency
+                                    value
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
-  }
 }
 `

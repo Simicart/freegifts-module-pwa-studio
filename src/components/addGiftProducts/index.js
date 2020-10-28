@@ -112,7 +112,11 @@ const AddGiftProducts = props => {
                     classes={classes}
                     onCancel={() => setShowProductOptions(false)}
                 >
-                    <OptionContent giftItem={itemToShowOption} closeDialog={() => setShowProductOptions(false)} addGiftProduct={data => addGiftProduct(data)} />
+                    <OptionContent giftItem={itemToShowOption}
+                        closeDialog={() => setShowProductOptions(false)}
+                        addGiftProduct={addGiftProduct}
+                        classes={classes}
+                    />
                 </Dialog> : ''
             }
         </div>
