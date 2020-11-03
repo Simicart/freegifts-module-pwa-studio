@@ -7,7 +7,7 @@ If you are using your own magento site, make sure it's:
 
 ## 2. Init project
 ```
-npm init @magento/pwa
+npm init @magento/pwa@1.1.2
 ```
 
 Fill in with your project information and cd into it.
