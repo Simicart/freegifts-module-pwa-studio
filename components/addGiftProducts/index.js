@@ -40,6 +40,7 @@ const AddGiftProducts = props => {
             removeGiftProduct(giftItem)
         } else {
             //to add
+            console.log(giftItem)
             if (giftItem.configurable) {
                 setItemToShowOption(giftItem)
                 setShowProductOptions(true);
@@ -87,7 +88,7 @@ const AddGiftProducts = props => {
             }
         )
     }, [giftItems])
-
+console.log(itemToShowOption)
     return (
         <div className={classes.addGiftProductsCtn}>
             <Button onClick={() => setOpenDialog(!openDialog)}

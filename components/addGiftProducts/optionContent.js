@@ -9,7 +9,7 @@ const OptionContent = props => {
     const { productInfoLoading, handleSelectionChange, configurable_options, canAddProduct, handleAddCart } = useOptionContent({ giftItem, closeDialog, addGiftProduct })
     if (productInfoLoading)
         return <LoadingIndicator />
-
+console.log('11');
     return (
         <div className={classes.giftProductConfigurableOptionCtn}>
             <Options

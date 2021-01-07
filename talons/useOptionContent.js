@@ -11,7 +11,7 @@ export const useOptionContent = props => {
             variables: {
                 sku: giftItem.sku
             },
-            skip: (!giftItem || !giftItem.id)
+            skip: (!giftItem || !giftItem.id || !giftItem.sku)
         }
     )
     const {
@@ -21,14 +21,14 @@ export const useOptionContent = props => {
     } = queryData;
 
     let configurable_options;
-    if (!productInfoData || productInfoError || !productInfoData.productDetail
+    if (productInfoError || (productInfoData && (!productInfoData.productDetail
         || !productInfoData.productDetail.items || !productInfoData.productDetail.items.length
         || !productInfoData.productDetail.items[0] || !productInfoData.productDetail.items[0].configurable_options
         || !productInfoData.productDetail.items[0].configurable_options.length
-    ) {
+    ))) {
         addGiftProduct(giftItem);
         closeDialog();
-    } else {
+    } else if (productInfoData) {
         configurable_options = productInfoData.productDetail.items[0].configurable_options;
     }
 
