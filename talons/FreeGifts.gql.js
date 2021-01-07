@@ -15,6 +15,7 @@ export const RuleFragment = gql`
             required_option
             final_price
             image
+            sku
         }
         notice
         total_added
@@ -83,5 +84,28 @@ export const REMOVE_GIFT_PRODUCT = gql`
             cart_id: $cartId
             item_id: $itemId
         ) @connection(key: "mpFreeGiftsAddGift")
+    }
+`;
+
+export const GET_FREEGIFT_CONFIG = gql`
+    query mpFreeGiftsConfigs {
+        mpFreeGiftsConfigs {
+            general {
+                gift_layout
+                allow_notice
+                notice
+                icon
+            }
+            display {
+                cart_page
+                cart_item
+                product_page
+            }
+            design {
+                label
+                background_color
+                text_color
+            }
+        }
     }
 `;

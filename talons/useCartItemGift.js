@@ -7,14 +7,15 @@ export const useCartItemGift = props => {
     let item_id;
     if (item && item.id)
         item_id = parseInt(item.id);
+        
     const [{ cartId }] = useCartContext();
-
+    
     const { data: giftRuleData } = useQuery(GET_FREE_GIFTS_BY_QUOTE_ITEM, {
         variables: {
             item_id,
             cartId
         },
-        skip: !item_id || skipChecking || !cartId,
+        skip: !item_id || skipChecking || !cartId || (item.mp_free_gifts && item.mp_free_gifts.is_free_gift),
         fetchPolicy: 'cache-and-network'
     });
 

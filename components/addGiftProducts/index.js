@@ -13,7 +13,11 @@ import OptionContent from './optionContent';
 const errorIcon = <Icon src={AlertCircleIcon} attrs={{ width: 18 }} />;
 
 const AddGiftProducts = props => {
+    const { btnSettings } = props;
     const classes = mergeClasses(defaultClasses, props.classes);
+    const talonProps = useAddGiftProducts({
+        rule: props.rule
+    })
     const {
         openDialog,
         setOpenDialog,
@@ -27,10 +31,10 @@ const AddGiftProducts = props => {
         showProductOptions,
         setShowProductOptions,
         itemToShowOption,
-        setItemToShowOption
-    } = useAddGiftProducts({
-        rule: props.rule
-    })
+        setItemToShowOption,
+        freegiftsConfigData
+    } = talonProps;
+
     const toggleItem = (giftItem, toRemove) => {
         if (toRemove) {
             removeGiftProduct(giftItem)
@@ -43,7 +47,6 @@ const AddGiftProducts = props => {
                 addGiftProduct(giftItem);
             }
         }
-        console.log(giftItem)
     }
 
     const [, { addToast }] = useToasts();
@@ -70,8 +73,13 @@ const AddGiftProducts = props => {
                             <div className={classes.giftItemName}>{name}</div>
                             <div className={classes.giftItemOldPrice}>{final_price}</div>
                             <div className={classes.giftItemNewPrice}>{gift_price}</div>
-                            <Button onClick={() => toggleItem(giftItem, added)} type={added ? 'reset' : 'button'}>
-                                {added ? 'Remove' : 'Add'}
+                            <Button onClick={() => {
+                                //removing cause error on api, waiting for mp to fix
+                                if (!added) {
+                                    toggleItem(giftItem, added)
+                                }
+                            }} type={added ? 'reset' : 'button'} style={{opacity: added ? 0.5 : 1}}>
+                                {added ? 'Added' : 'Add'}
                             </Button>
                         </div>
                     </div>
@@ -82,8 +90,27 @@ const AddGiftProducts = props => {
 
     return (
         <div className={classes.addGiftProductsCtn}>
-            <Button onClick={() => setOpenDialog(!openDialog)} >
-                {'Add Free Gift'}
+            <Button onClick={() => setOpenDialog(!openDialog)}
+                style={
+                    {
+                        border: 'none',
+                        backgroundColor: (btnSettings && btnSettings.button_color) ?
+                            btnSettings.button_color :
+                            (freegiftsConfigData && freegiftsConfigData.mpFreeGiftsConfigs.design.background_color) ?
+                                freegiftsConfigData.mpFreeGiftsConfigs.design.background_color :
+                                'blue',
+                        color: (btnSettings && btnSettings.text_color) ?
+                            btnSettings.text_color :
+                            (freegiftsConfigData && freegiftsConfigData.mpFreeGiftsConfigs.design.text_color) ?
+                                freegiftsConfigData.mpFreeGiftsConfigs.design.text_color :
+                                'white',
+                    }
+                }>
+                {(btnSettings && btnSettings.button_label) ?
+                    btnSettings.button_label :
+                    (freegiftsConfigData && freegiftsConfigData.mpFreeGiftsConfigs.design.label) ?
+                        freegiftsConfigData.mpFreeGiftsConfigs.design.label :
+                        'Add Free Gift'}
             </Button>
             <Dialog
                 isOpen={openDialog}
@@ -106,18 +133,18 @@ const AddGiftProducts = props => {
             </Dialog>
             {
                 itemToShowOption ?
-                <Dialog
-                    isOpen={showProductOptions}
-                    title={'Select Gift Options'}
-                    classes={classes}
-                    onCancel={() => setShowProductOptions(false)}
-                >
-                    <OptionContent giftItem={itemToShowOption}
-                        closeDialog={() => setShowProductOptions(false)}
-                        addGiftProduct={addGiftProduct}
+                    <Dialog
+                        isOpen={showProductOptions}
+                        title={'Select Gift Options'}
                         classes={classes}
-                    />
-                </Dialog> : ''
+                        onCancel={() => setShowProductOptions(false)}
+                    >
+                        <OptionContent giftItem={itemToShowOption}
+                            closeDialog={() => setShowProductOptions(false)}
+                            addGiftProduct={addGiftProduct}
+                            classes={classes}
+                        />
+                    </Dialog> : ''
             }
         </div>
     )

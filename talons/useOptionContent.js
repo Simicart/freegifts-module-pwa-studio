@@ -4,12 +4,12 @@ import { GET_PRODUCT_OPTION } from './ProductOptions.gql'
 
 export const useOptionContent = props => {
     const { giftItem, closeDialog, addGiftProduct } = props;
-    const [selectedOption, setSelectedOption] = useState({})
+    const [selectedOption, setSelectedOption] = useState({});
     const queryData = useQuery(
         GET_PRODUCT_OPTION,
         {
             variables: {
-                sku: "VT11"
+                sku: giftItem.sku
             },
             skip: (!giftItem || !giftItem.id)
         }

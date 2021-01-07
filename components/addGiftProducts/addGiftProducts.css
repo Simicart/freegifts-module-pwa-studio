@@ -52,3 +52,8 @@
     margin: 15px auto;
     display: block;
 }
+@media(max-width: 767px) {
+    .giftItemCtn {
+        width: 100%;
+    }
+}

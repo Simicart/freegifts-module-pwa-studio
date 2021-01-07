@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useMutation, useLazyQuery } from '@apollo/client';
-import { ADD_GIFT_PRODUCT, REMOVE_GIFT_PRODUCT } from './FreeGifts.gql'
+import { useMutation, useLazyQuery, useQuery } from '@apollo/client';
+import { ADD_GIFT_PRODUCT, REMOVE_GIFT_PRODUCT, GET_FREEGIFT_CONFIG } from './FreeGifts.gql'
 import { useCartContext } from '@magento/peregrine/lib/context/cart';
 import { GET_CART_DETAILS } from '@magento/venia-ui/lib/components/CartPage/cartPage.gql';
 
@@ -13,6 +13,7 @@ export const useAddGiftProducts = props => {
     freeGiftLeft = freeGiftLeft > 0 ? freeGiftLeft : 0;
     const [{ cartId }] = useCartContext();
 
+    const { data: freegiftsConfigData } = useQuery(GET_FREEGIFT_CONFIG);
     const [
         addGiftProductMutation,
         { error: addGiftProductError, loading: addGiftProductLoading, data: addGiftProductData }
@@ -83,6 +84,7 @@ export const useAddGiftProducts = props => {
         showProductOptions,
         setShowProductOptions,
         itemToShowOption,
-        setItemToShowOption
+        setItemToShowOption,
+        freegiftsConfigData
     };
 }
